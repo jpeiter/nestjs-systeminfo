@@ -1,9 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { SystemInfoOptions } from './system-info/system-info-options';
-import { SystemInfoService } from './system-info/system-info.service';
+import { SystemInfoOptions } from './system-info-options';
+import { SystemInfoService } from './system-info.service';
 
 @Controller('system')
-export class AppController {
+export class SystemInfoController {
 
   constructor(
     private readonly systemInfoService: SystemInfoService

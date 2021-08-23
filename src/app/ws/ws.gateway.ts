@@ -20,9 +20,10 @@ export class AppWSGateway {
   ) { }
 
   @SubscribeMessage('update')
-  handleEvent(client: Socket, option: SystemInfoOptions) {
-    const data = this.service.get(option);
-    this.server.to(client.id).emit('update', data);
+  handleEvent(client: Socket, option: { option: SystemInfoOptions }) {
+    this.service.get(option.option).subscribe(data => {
+      this.server.to(client.id).emit('update', data);
+    });
   }
 
 }

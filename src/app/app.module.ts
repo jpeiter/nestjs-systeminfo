@@ -1,15 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { SystemInfoService } from './system-info/system-info.service';
-import { AppWSGateway } from './ws/ws.gateway';
+import { SystemInfoModule } from './system-info/system-info.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [
-    SystemInfoService,
-    AppWSGateway
-  ],
+  imports: [SystemInfoModule],
 })
 export class AppModule {
 }
