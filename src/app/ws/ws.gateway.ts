@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
-import { SystemInfoOptions } from "../system-info/system-info-options";
+import { SystemInfoType } from "../system-info/system-info-options";
 import { SystemInfoService } from "../system-info/system-info.service";
 
 @Injectable()
@@ -18,8 +18,8 @@ export class AppWSGateway {
   ) { }
 
   @SubscribeMessage('update')
-  handleEvent(client: Socket, option: { option: SystemInfoOptions }) {
-    this.service.get(option.option).subscribe(data => {
+  handleEvent(client: Socket, type: { type: SystemInfoType }) {
+    this.service.get(type.type).subscribe(data => {
       this.server.to(client.id).emit('update', data);
     });
   }

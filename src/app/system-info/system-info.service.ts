@@ -3,16 +3,16 @@ import { catchError, forkJoin, from, mergeMap, Observable, of } from 'rxjs';
 import * as si from 'systeminformation';
 import { Systeminformation } from "systeminformation";
 import { CpuInfo, Info } from './system-info';
-import { SystemInfoOptions } from './system-info-options';
+import { SystemInfoType } from './system-info-options';
 
 @Injectable()
 export class SystemInfoService {
 
-  get(option: SystemInfoOptions): Observable<Info<any>> {
-    if (option) {
-      const index = SystemInfoOptions[option.toString().toUpperCase()];
+  get(type: SystemInfoType): Observable<Info<any>> {
+    if (type) {
+      const index = SystemInfoType[type.toString().toUpperCase()];
       if (typeof index == 'number') {
-        const value = SystemInfoOptions[index].toLowerCase();
+        const value = SystemInfoType[index].toLowerCase();
         return this[value]();
       }
       return this.catchError('Option not available');

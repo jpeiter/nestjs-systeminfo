@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { SystemInfoOptions } from './system-info-options';
+import { SystemInfoType } from './system-info-options';
 import { SystemInfoService } from './system-info.service';
 
 @Controller('system')
@@ -10,7 +10,7 @@ export class SystemInfoController {
   ) { }
 
   @Get('info')
-  getInfo(@Query('type') type: SystemInfoOptions) {
+  getInfo(@Query('type') type: SystemInfoType) {
     return this.systemInfoService.get(type);
   }
 }

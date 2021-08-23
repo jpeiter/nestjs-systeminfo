@@ -1,4 +1,4 @@
-export enum SystemInfoOptions {
+export enum SystemInfoType {
   'OS',
   'CPU',
   'RAM',
