@@ -22,7 +22,7 @@ To make an HTTP request, all you've got to do is send a GET request to:
 ```
 http://localhost:3000/system/info?type={TYPE}
 ```
-Where the query parameter `type` has to be one of the following options: `OS`, `CPU`, `RAM`, `GPU` or `DISK`.
+Where the query parameter `type` has to be one of the following options: `CPU`, `CPU_SPEED`, `CPU_TEMPERATURE`, `DISK`, `GPU`, `OS`, or `RAM`.
 
 ## WebSocket
 
