@@ -1,4 +1,5 @@
 import { Systeminformation } from "systeminformation";
+import { SystemInfoType } from "./system-info-type";
 
 export class SystemInfo {
   readonly os?: Info<Systeminformation.OsData>;
@@ -9,6 +10,7 @@ export class SystemInfo {
 }
 
 export class Info<T>{
+  type?: SystemInfoType;
   data?: T;
   success: boolean;
   updatedOn: string;

@@ -29,37 +29,38 @@ export class SystemInfoService {
   }
 
   cpu(): Observable<Info<Systeminformation.CpuData>> {
-    return this.transform(si.cpu());
+    return this.transform(si.cpu(), SystemInfoType.CPU);
   }
 
   cpuSpeed(): Observable<Info<Systeminformation.CpuCurrentSpeedData>> {
-    return this.transform(si.cpuCurrentSpeed());
+    return this.transform(si.cpuCurrentSpeed(), SystemInfoType.CPU_SPEED);
   }
 
   cpuTemperature(): Observable<Info<Systeminformation.CpuTemperatureData>> {
-    return this.transform(si.cpuTemperature());
+    return this.transform(si.cpuTemperature(), SystemInfoType.CPU_TEMPERATURE);
   }
 
   disk(): Observable<Info<Systeminformation.BlockDevicesData[]>> {
-    return this.transform(si.blockDevices());
+    return this.transform(si.blockDevices(), SystemInfoType.DISK);
   }
 
   gpu(): Observable<Info<Systeminformation.GraphicsData>> {
-    return this.transform(si.graphics());
+    return this.transform(si.graphics(), SystemInfoType.GPU);
   }
 
   os(): Observable<Info<Systeminformation.OsData>> {
-    return this.transform(si.osInfo());
+    return this.transform(si.osInfo(), SystemInfoType.OS);
   }
 
   ram(): Observable<Info<Systeminformation.MemData>> {
-    return this.transform(si.mem());
+    return this.transform(si.mem(), SystemInfoType.RAM);
   }
 
-  private transform(promise: Promise<any>): Observable<Info<any>> {
+  private transform(promise: Promise<any>, type: SystemInfoType): Observable<Info<any>> {
     return from(promise).pipe(
       mergeMap(data =>
         of({
+          type,
           data,
           success: true,
           updatedOn: this.dateTime()
