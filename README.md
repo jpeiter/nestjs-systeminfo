@@ -27,7 +27,7 @@ Where the query parameter `type` has to be one of the following options: `CPU`, 
 To request and listen to messages via WS, just connect to the port 3000, and emit/listen to the `update` event. The following code has an example by using socket.io's [Client API](https://socket.io/docs/v4/client-api/).
 
 ```javascript
-const socket = io('http://localhost:3000');;
+const socket = io('http://localhost:3000');
 
 listen = () => {
   socket.on('update', (data) => {
