@@ -2,7 +2,7 @@
 
 Simple HTTP/WebSocket  interface created with [NestJS](https://nestjs.com/), [socket.io](https://socket.io/) and [systeminformation](https://systeminformation.io/), that provides information about the server/pc it is running on.
 
-Currently, there are five types of information available, which return data about OS, CPU, RAM, GPU and storage.
+Currently, there are seven types of information available, which return data about OS, CPU, RAM, GPU and storage.
 
 ## Installation
 
