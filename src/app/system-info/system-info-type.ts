@@ -1,7 +1,9 @@
 export enum SystemInfoType {
-  'OS',
-  'CPU',
-  'RAM',
-  'GPU',
-  'DISK'
+  CPU = 'CPU',
+  CPU_SPEED = 'CPU_SPEED',
+  CPU_TEMPERATURE = 'CPU_TEMPERATURE',
+  DISK = 'DISK',
+  GPU = 'GPU',
+  OS = 'OS',
+  RAM = 'RAM'
 }

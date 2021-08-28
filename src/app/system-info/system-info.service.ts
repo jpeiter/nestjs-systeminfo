@@ -1,77 +1,71 @@
 import { Injectable } from '@nestjs/common';
-import { catchError, forkJoin, from, mergeMap, Observable, of } from 'rxjs';
+import { catchError, from, mergeMap, Observable, of } from 'rxjs';
 import * as si from 'systeminformation';
 import { Systeminformation } from "systeminformation";
-import { CpuInfo, Info } from './system-info';
-import { SystemInfoType } from './system-info-options';
+import { Info } from './system-info';
+import { SystemInfoType } from './system-info-type';
 
 @Injectable()
 export class SystemInfoService {
 
+  getMethod(type: SystemInfoType) {
+    switch (type) {
+      case SystemInfoType.CPU: return this.cpu();
+      case SystemInfoType.CPU_SPEED: return this.cpuSpeed();
+      case SystemInfoType.CPU_TEMPERATURE: return this.cpuTemperature();
+      case SystemInfoType.DISK: return this.disk();
+      case SystemInfoType.GPU: return this.gpu();
+      case SystemInfoType.OS: return this.os();
+      case SystemInfoType.RAM: return this.ram();
+      default: return null;
+    }
+  }
+
   get(type: SystemInfoType): Observable<Info<any>> {
     if (type) {
-      const index = SystemInfoType[type.toString().toUpperCase()];
-      if (typeof index == 'number') {
-        const value = SystemInfoType[index].toLowerCase();
-        return this[value]();
-      }
-      return this.catchError('Option not available');
+      return this.getMethod(type);
     }
-    return this.catchError();
+    return this.catchError('Please provide info type.');
   }
 
-  os(): Observable<Info<Systeminformation.OsData>> {
-    return this.transform(si.osInfo());
+  cpu(): Observable<Info<Systeminformation.CpuData>> {
+    return this.transform(si.cpu());
   }
 
-  cpu(): Observable<Info<CpuInfo>> {
-    const obs = [
-      from(si.cpu()),
-      from(si.cpuCurrentSpeed()),
-      from(si.cpuTemperature())
-    ];
-    return forkJoin(obs).pipe(
-      mergeMap(results => {
-        return of({
-          data: {
-            info: (results[0]) as Systeminformation.CpuData,
-            speed: (results[1]) as Systeminformation.CpuCurrentSpeedData,
-            temperature: (results[2]) as Systeminformation.CpuTemperatureData,
-          },
-          success: true,
-          updatedOn: this.dateTime()
-        })
-      }),
-      catchError(err => {
-        return this.catchError();
-      })
-    );
+  cpuSpeed(): Observable<Info<Systeminformation.CpuCurrentSpeedData>> {
+    return this.transform(si.cpuCurrentSpeed());
   }
 
-  ram(): Observable<Info<Systeminformation.MemData>> {
-    return this.transform(si.mem());
-  }
-
-  gpu(): Observable<Info<Systeminformation.GraphicsData>> {
-    return this.transform(si.graphics());
+  cpuTemperature(): Observable<Info<Systeminformation.CpuTemperatureData>> {
+    return this.transform(si.cpuTemperature());
   }
 
   disk(): Observable<Info<Systeminformation.BlockDevicesData[]>> {
     return this.transform(si.blockDevices());
   }
 
+  gpu(): Observable<Info<Systeminformation.GraphicsData>> {
+    return this.transform(si.graphics());
+  }
+
+  os(): Observable<Info<Systeminformation.OsData>> {
+    return this.transform(si.osInfo());
+  }
+
+  ram(): Observable<Info<Systeminformation.MemData>> {
+    return this.transform(si.mem());
+  }
+
   private transform(promise: Promise<any>): Observable<Info<any>> {
     return from(promise).pipe(
-      mergeMap(data => {
-        return of({
+      mergeMap(data =>
+        of({
           data,
           success: true,
           updatedOn: this.dateTime()
         })
-      }),
-      catchError(err => {
-        return this.catchError();
-      })
+      ),
+      catchError(err => this.catchError())
     );
   }
 

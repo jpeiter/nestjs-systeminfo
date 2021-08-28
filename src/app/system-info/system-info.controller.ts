@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { SystemInfoType } from './system-info-options';
+import { SystemInfoType } from './system-info-type';
 import { SystemInfoService } from './system-info.service';
 
 @Controller('system')
